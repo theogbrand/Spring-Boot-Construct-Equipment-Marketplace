@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Partner Accepted Bids Landing Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css} " />
+</head>
+<body>
+<main>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/home/partner">AntBuildz</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+    
+            <li class="nav-item">
+              <a class="nav-link" href="/home/partner/acceptedBids">View Accepted Requests</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/home/partner/addEquipment">Add New Equipment</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+<h4 style="margin-top: 10px; margin-bottom: 10px; padding-left: 15px;"><b>Here are your Accepted Bids and their status</b></h4>
+<br>
+</main>
+
+<div class="container">
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Request Id</th>
+            <th>Name</th>
+            <th>From Date</th>
+            <th>To Date</th>
+            <th>Payment Amount</th>
+            <th>Customer Payment Made?</th>
+            <th>Customer Request Completed?</th>
+            <th>Partner Collected Payment?</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="acceptedEquipmentRequestWithPayment : ${acceptedEquipmentRequestsWithPayment}" >
+            <td th:text="${acceptedEquipmentRequestWithPayment.key.id}"></td>
+            <td th:text="${acceptedEquipmentRequestWithPayment.key.equipmentName}"></td>
+            <td th:text="${acceptedEquipmentRequestWithPayment.key.fromDate}"></td>
+            <td th:text="${acceptedEquipmentRequestWithPayment.key.toDate}"></td>
+            <td th:text="${acceptedEquipmentRequestWithPayment.value.price}"></td>
+            <td th:text="${acceptedEquipmentRequestWithPayment.value.customerPaymentMade}"></td>
+            <td th:text="${acceptedEquipmentRequestWithPayment.value.customerCompletedRequest}"></td>
+            <td th:text="${acceptedEquipmentRequestWithPayment.value.partnerCompletedRequest}"></td>
+            <td th:if="${acceptedEquipmentRequestWithPayment.value.customerCompletedRequest and !acceptedEquipmentRequestWithPayment.value.partnerCompletedRequest}">
+                    <a role="button" class="btn btn-success" th:href="@{/home/partner/acceptedBids/completeRequest(
+                                paymentId=${acceptedEquipmentRequestWithPayment.value.id},
+                                equipmentRequestId=${acceptedEquipmentRequestWithPayment.key.id}
+                                )}">Claim Payment</a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!--bootstrap-->
+<!--JS for Bootstrap-->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.16.1/umd/popper.min.js}"></script>
+</body>
+</html>
+
+<style>
+    .btn{
+        color: white;
+    }
+</style>

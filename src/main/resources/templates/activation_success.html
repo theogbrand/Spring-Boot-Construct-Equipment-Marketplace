@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <title>Registration Success Landing Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css} " />
+</head>
+
+<body>
+    <main>
+
+        <h4>Thank you. Now that your account has been activated, you can log in.</h4>
+        <h6>If you are applying as a Partner, note that you will have to wait for AntBuildz to confirm your registration
+            as well before you can log in.</h6>
+        <a href="/login" role="button" class="btn btn-outline-warning">Login</a>
+    </main>
+
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/1.16.1/umd/popper.min.js}"></script>
+</body>
+
+</html>
+
+<style>
+    body {
+        background-color: #F5F5F5;
+    }
+
+    h4 {
+        margin-top: 30px;
+        margin-left: 1vw;
+        text-align: center;
+    }
+
+    h6 {
+        text-align: center;
+    }
+
+    .btn {
+        background-color: white;
+        text-decoration: none;
+        color: black;
+        margin: 0 auto;
+        display: block;
+        width: 10vw;
+        margin-top: 20px;
+    }
+
+    .btn:hover,
+    .btn:active {
+        text-decoration: none;
+        color: black;
+    }
+</style>

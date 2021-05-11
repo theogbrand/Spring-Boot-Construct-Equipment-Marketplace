@@ -1,0 +1,55 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap CSS -->
+  <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css} " />
+  <title>Save Bid Recommendation</title>
+</head>
+
+<body>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/home/admin" style="margin-left:10px;">AntBuildz</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </nav>
+    <br>
+    <div class="container">
+      <h3>Bid Recommendations</h3>
+      <hr />
+      <p class="h4 mb-4">Save Bid Recommendation</p>
+      <form action="#" th:action="@{/home/admin/bid/saveUpdate}" th:object="${bidrec}" method="POST">
+        <input type="hidden" th:field="*{recommendationId}">
+
+        <label for="equipmentName" class="col-form-label"><u>Equipment Name</u></label>
+        <select th:field="*{equipmentName}" class="form-control" id="equipmentName">
+            <option value="Lorry">Lorry</option>
+            <option value="Truck">Truck</option>
+            <option value="Trailer">Trailer</option>
+            <option value="Crane">Crane</option>
+        </select>
+        <label for="Recommended Daily Price"> <u>Recommended Daily Price</u></label>
+        <input type="text" th:field="*{recDailyPrice}" placeholder="Recommended Daily Price"
+          class="form-control mb-4 col-4" />
+        <div class="alert alert-warning" th:if="${#fields.hasErrors('recDailyPrice')}" th:errors="*{recDailyPrice}">
+        </div>
+        <button type="submit" class="btn btn-info col-2">Save</button>
+      </form>
+      <hr />
+    </div>
+    <div class="container">
+      <a th:href="@{/home/admin}" class="btn btn-secondary">
+        Back to Admin Homepage</a>
+    </div>
+    </div>
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/1.16.1/umd/popper.min.js}"></script>
+  </body>
+
+</html>

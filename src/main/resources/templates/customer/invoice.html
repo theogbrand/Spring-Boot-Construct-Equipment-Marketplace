@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="ISO-8859-1">
+    <link th:rel="stylesheet"
+          th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css} " />
+<!--    Vanilla CSS to get invoice layout-->
+    <link th:rel="stylesheet" th:href="@{/invoice.css} " />
+    <title>Invoice for Equipment Request</title>
+
+</head>
+<body>
+<div id="invoice">
+
+    <div class="toolbar hidden-print">
+        <div class="text-right">
+            <button id="printInvoice" class="btn btn-info"
+                    onclick="window.print()">
+                <i class="fa fa-print"></i> Print
+            </button>
+
+        </div>
+        <hr>
+    </div>
+
+    <form action="#" th:action="@{/home/customer/acceptedRequests/makePayment(
+                                                    paymentId=*{paymentId}
+                                                    )}"  method="POST"
+          th:object="${invoice}" class="box1">
+        <div class="invoice overflow-auto">
+            <div style="min-width: 600px">
+                <main>
+
+                    <div class="row contacts">
+                        <div class="col invoice-to">
+                            <div class="text-gray-light">INVOICE TO:</div>
+                            <label>
+                                <input class="to input-b-w" th:value="*{userName}"  readonly />
+                            </label><br>
+                            <label>
+                                <input class="to input-b-w" th:value="*{userEmail}"  readonly />
+                            </label>
+
+                        </div>
+                        <div class="col invoice-details">
+                            <h1 class="invoice-id">INVOICE</h1>
+                            <div class="date">Generated On: <label>
+                                <input class="date input-b" th:value="*{generatedOn}"  readonly/>
+                            </label></div>
+                            <div class="date">Due Date: <label>
+                                <input class="date input-b" th:value="*{dueDate}"  readonly/>
+                            </label></div>
+                        </div>
+                    </div>
+
+                    <table border="0" cellspacing="0" cellpadding="0">
+
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="text-left">DESCRIPTION</th>
+                            <th class="text-right">PRICE</th>
+
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="no">01</td>
+                                <td class="text-left"><h3>
+                                    Cost</h3></td>
+                                <td class="unit"><label>
+                                    <input class="unit input-b-w" th:value="*{cost}" readonly/>
+                                </label></td>
+
+
+                            </tr>
+                        </tbody>
+
+                        <tfoot>
+
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td><div >Thank you!</div></td>
+                        </tr>
+
+                        </tfoot>
+
+                    </table>
+
+
+                </main>
+                <button type="submit" class="btn btn-primary btn-lg" name="idvalue">Pay Now</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--JS for Bootstrap-->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.16.1/umd/popper.min.js}"></script>
+
+<!--JS for print invoice function-->
+<script>
+    $('#printInvoice').click(function() {
+        Popup($('.invoice')[0].outerHTML);
+        function Popup(data) {
+            window.print();
+            return true;
+        }
+    });
+</script>
+</body>
+</html>

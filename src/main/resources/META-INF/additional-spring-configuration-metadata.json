@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "from.email",
+      "type": "java.lang.String",
+      "description": "Description for from.email."
+    },
+    {
+      "name": "request.expiry.seconds",
+      "type": "java.lang.String",
+      "description": "Description for request.expiry.seconds."
+    }
+  ]
+}

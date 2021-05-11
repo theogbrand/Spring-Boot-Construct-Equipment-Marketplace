@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <link th:rel="stylesheet"
+          th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css} " />
+    <title>Create New Request</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+    <main>
+
+    </main>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/home/customer">AntBuildz</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/home/customer/create">Create Request</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/home/customer/acceptedRequests">View Accepted Bids</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <h4 style="margin-top: 10px; margin-bottom: 10px; padding-left: 15px;"><b>Create a new Equipment Request for partners to bid on</b></h4>
+    <br>
+    <form th:action="@{/home/customer/create/newRequest}" th:object="${equipmentRequest}" method="post">
+        <div class="alert alert-warning" th:if="${#fields.hasErrors('${equipmentRequest}')}" th:errors="${equipmentRequest}"></div>
+        <div class="form">
+            <div class="row-md-12 form-group row">
+                <label for="equipmentName" class="col-sm-3 col-form-label"
+                style="font-size: 1em;">Equipment Name</label>
+                <div class="col-sm-5" style="text-align: left;">
+                    <label>
+                        <select th:field="*{equipmentName}" class="form-control" id="equipmentName">
+                            <option value="Lorry">Lorry</option>
+                            <option value="Truck">Truck</option>
+                            <option value="Trailer">Trailer</option>
+                            <option value="Crane">Crane</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <div class="row-md-12 form-group row">
+                <label for="fromDate" class="col-sm-3 col-form-label"
+                    style="font-size: 1em;">From Date</label>
+                <div class="col-sm-5" style="text-align: left;">
+                    <label>
+                        <input type="date" class="form-control" th:field="*{fromDate}" id="fromDate">
+                        <div class="alert alert-warning" th:if="${#fields.hasErrors('fromDate')}" th:errors="*{fromDate}"></div>
+                    </label>
+                </div>
+            </div>
+
+                <div class="row-md-12 form-group row">
+                    <label for="toDate" class="col-sm-3 col-form-label"
+                    style="font-size: 1em;">To Date</label>
+                <div class="col-sm-5" style="text-align: left;">
+                    <label>
+                        <input type="date" class="form-control" th:field="*{toDate}" id="toDate">
+                        <div class="alert alert-warning" th:if="${#fields.hasErrors('toDate')}" th:errors="*{toDate}"></div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="text-right col-sm-7" style="width: 100%; padding: 0;">
+                    <button type="submit" class="btn btn-outline-warning">
+                        Submit Request
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/1.16.1/umd/popper.min.js}"></script>
+</body>
+
+</html>
+
+<style>
+    h3 {
+        margin-top: 30px;
+        margin-left: 1vw;
+        text-align: center;
+    }
+
+    .form {
+        margin-left: 14vw;
+        text-align: center;
+        padding-right: 30px;
+        width: 100% !important;
+        align-items: center;
+    }
+
+    .col-form-label {
+        text-align: left !important;
+        margin-left: 60px;
+    }
+
+    body {
+        font-family: "Poppins", sans-serif;
+        font-size: 15px;
+        /*background-color: #white;*/
+    }
+
+    .btn {
+        background-color: white;
+        text-decoration: none;
+        color: black;
+    }
+
+    .btn:hover,
+    .btn:active {
+        text-decoration: none;
+        color: black;
+    }
+</style>

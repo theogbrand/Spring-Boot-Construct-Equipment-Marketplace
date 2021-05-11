@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <title>Partner Landing Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css} " />
+<!--    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"-->
+<!--        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">-->
+  </head>
+  <body>
+    <main>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/home/partner">AntBuildz</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+    
+            <li class="nav-item">
+              <a class="nav-link" href="/home/partner/acceptedBids">View Accepted Requests</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/home/partner/addEquipment">Add New Equipment</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+
+
+    </main>
+    <h4 style="margin-top: 10px; margin-bottom: 10px; padding-left: 15px;"><b>Welcome to Antbuildz!</b></h4>
+    <div class="container">
+      <br />
+      <h4><u>Available Equipment</u></h4>
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>Equipment Id</th>
+            <th>Equipment Name</th>
+            <th>Model</th>
+            <th>Year Manufactured</th>
+            <th>Description</th>
+            <th>Booked Dates</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="partnerEquipment : ${equipmentAndBookedDatesMap}">
+            <td th:text="${partnerEquipment.key.id}"></td>
+            <td th:text="${partnerEquipment.key.equipmentName}"></td>
+            <td th:text="${partnerEquipment.key.model}"></td>
+            <td th:text="${partnerEquipment.key.manufactureYear}"></td>
+            <td th:text="${partnerEquipment.key.description}"></td>
+            <td colspan="4" style="border: 0px; padding:0px; margin:0px; height:auto;">
+              <table class="table table-striped" style="margin: 0px;">
+                <tr>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th> </th>
+                </tr>
+                <tr th:each="bookedDatesPair : ${partnerEquipment.value}">
+                  <td th:text="${bookedDatesPair.key}"></td>
+                  <td th:text="${bookedDatesPair.value}"></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="container">
+      <br />
+      <h4><u>Active Requests</u></h4>
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>Request Id</th>
+            <th>Name</th>
+            <th>From Date</th>
+            <th>To Date</th>
+            <th>Total Duration (Days)</th>
+            <th>Bid Status</th>
+            <th>Participating Equipment</th>
+            <th>Suggested Bid Price</th>
+            <th>Bid Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            th:each="openEquipmentRequest : ${mapOfOpenRequestsAndBidsAndAvailableEquipments}"
+          >
+            <form
+              th:action="@{/home/partner/createBid}"
+              th:object="${bid}"
+              method="post"
+            >
+              <td th:text="${openEquipmentRequest.key.id}"></td>
+              <td th:text="${openEquipmentRequest.key.equipmentName}"></td>
+              <td th:text="${openEquipmentRequest.key.fromDate}"></td>
+              <td th:text="${openEquipmentRequest.key.toDate}"></td>
+              <td th:text="${openEquipmentRequest.key.requestLength}"></td>
+
+              <td
+                th:if="${idOfRequestsWithBid.contains(openEquipmentRequest.key.id)}"
+                th:text="'Bid already submitted'"
+              ></td>
+              <td
+                th:unless="${idOfRequestsWithBid.contains(openEquipmentRequest.key.id)}"
+                th:text="'Bid not submitted'"
+              ></td>
+
+              <td
+                th:if="${idOfRequestsWithBid.contains(openEquipmentRequest.key.id)}"
+              >
+                <span
+                  th:text="'Id:' + ${openEquipmentRequest.value.bid.partnerEquipment.id} + ' ' + ${openEquipmentRequest.value.bid.partnerEquipment.equipmentName}"
+                ></span>
+              </td>
+              <td
+                th:unless="${idOfRequestsWithBid.contains(openEquipmentRequest.key.id)}"
+              >
+                <label>
+                  <select th:field="*{equipmentId}" class="form-control">
+                    <option
+                      th:each="equipment : ${openEquipmentRequest.value.equipmentList}"
+                      th:value="${equipment.id}"
+                      th:text="'Id:' + ${equipment.id} + ' ' + ${equipment.equipmentName}"
+                    ></option>
+                  </select>
+                </label>
+              </td>
+              <td
+                th:if="${openEquipmentRequest.key.suggestedBid == 0.0}"
+                th:text="''"
+              ></td>
+              <td
+                th:unless="${openEquipmentRequest.key.suggestedBid == 0.0}"
+                th:text="${openEquipmentRequest.key.suggestedBid}"
+              ></td>
+
+              <td
+                th:if="${idOfRequestsWithBid.contains(openEquipmentRequest.key.id)}"
+                th:text="'$' + ${openEquipmentRequest.value.bid.price}"
+              ></td>
+              <td
+                th:unless="${idOfRequestsWithBid.contains(openEquipmentRequest.key.id)}"
+              >
+                <label>
+                  <input type="text" th:field="*{price}" />
+                  <div class="alert alert-warning" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                </label>
+
+                <input
+                  type="hidden"
+                  th:attr="name='equipmentRequestId'"
+                  th:value="${openEquipmentRequest.key.id}"
+                />
+              </td>
+
+              <td
+                th:if="${idOfRequestsWithBid.contains(openEquipmentRequest.key.id)}"
+              >
+                  <a role="button" class="btn btn-danger"
+                    th:href="@{/home/partner/cancelBid(bidId=${openEquipmentRequest.value.bid.id})}"
+                    >Cancel Bid</a
+                  >
+              </td>
+              <td
+                th:unless="${idOfRequestsWithBid.contains(openEquipmentRequest.key.id)}"
+              >
+                <button type="submit" class="btn btn-success">Submit Bid</button>
+              </td>
+            </form>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="container">
+      <br />
+      <h4><u>Expired and Rejected Bids</u></h4>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Request Id</th>
+            <th>Name</th>
+            <th>From Date</th>
+            <th>To Date</th>
+            <th>Bid Submitted Price</th>
+            <th>Bid Rejected?</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            th:each="expiredEquipmentRequest : ${mapOfExpiredRequestsWithBid}"
+          >
+            <td th:text="${expiredEquipmentRequest.key.id}"></td>
+            <td th:text="${expiredEquipmentRequest.key.equipmentName}"></td>
+            <td th:text="${expiredEquipmentRequest.key.fromDate}"></td>
+            <td th:text="${expiredEquipmentRequest.key.toDate}"></td>
+            <td th:text="${expiredEquipmentRequest.value.price}"></td>
+            <td th:text="${expiredEquipmentRequest.value.bidRejected}"></td>
+            <td th:text="${expiredEquipmentRequest.value.remarks}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+<!--    Bootstrap-->
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/1.16.1/umd/popper.min.js}"></script>
+  </body>
+</html>

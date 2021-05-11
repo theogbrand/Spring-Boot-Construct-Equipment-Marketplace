@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Customer Accepted Requests Landing Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css} " />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/home/customer">AntBuildz</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+    
+            <li class="nav-item">
+              <a class="nav-link" href="/home/customer/create">Create Request</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/home/customer/acceptedRequests">View Accepted Bids</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+    <h4 style="margin-top: 10px; margin-bottom: 10px; padding-left: 15px;"><b>Here are your Accepted Requests and their status</b></h4>
+
+<br>
+
+<div class="container">
+    <form action="#"  method="post"
+          th:object="${acceptedEquipmentRequestPayments}">
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Request Id</th>
+            <th>Name</th>
+            <th>From Date</th>
+            <th>To Date</th>
+            <th>Payment Amount</th>
+            <th>Customer Payment Made?</th>
+            <th>Customer Request Completed?</th>
+            <th>Partner Request Completed?</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="equipmentRequestAndPayment : ${acceptedEquipmentRequestPayments}" >
+                <td th:text="${equipmentRequestAndPayment.key.id}"></td>
+                <td th:text="${equipmentRequestAndPayment.key.equipmentName}"></td>
+                <td th:text="${equipmentRequestAndPayment.key.fromDate}"></td>
+                <td th:text="${equipmentRequestAndPayment.key.toDate}"></td>
+                <td th:text="${equipmentRequestAndPayment.value.price}"></td>
+                <td th:text="${equipmentRequestAndPayment.value.customerPaymentMade}"></td>
+                <td th:text="${equipmentRequestAndPayment.value.customerCompletedRequest}"></td>
+                <td th:text="${equipmentRequestAndPayment.value.partnerCompletedRequest}"></td>
+
+
+                <td th:if="${!equipmentRequestAndPayment.value.customerPaymentMade}">
+                    <!--Old code to change Payment status to true-->
+<!--                    <a th:href="@{/home/customer/acceptedRequests/makePayment(-->
+<!--                                paymentId=${equipmentRequestAndPayment.value.id}-->
+<!--                                )}">Make Payment</a>-->
+                    <a role="button" class="btn btn-outline-warning" th:href="@{/home/customer/acceptedRequests/bid/choose/(paymentId=${equipmentRequestAndPayment.value.id})
+                                }">Make Payment</a>
+                </td>
+
+                <td th:if="${equipmentRequestAndPayment.value.customerPaymentMade and !equipmentRequestAndPayment.value.customerCompletedRequest}">
+                    <a role="button" class="btn btn-success" th:href="@{/home/customer/acceptedRequests/completeRequest(
+                                paymentId=${equipmentRequestAndPayment.value.id}
+                                )}">Complete Request</a>
+                </td>
+        </tr>
+        </tbody>
+    </table>
+    </form>
+</div>
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.16.1/umd/popper.min.js}"></script>
+</body>
+</html>
+
+<style>
+    .btn {
+        background-color: white;
+        text-decoration: none;
+        color: black;
+        margin:0 auto;
+        display:block;
+        width: 11vw;
+        margin-top: 20px;
+    }
+
+    .btn:hover,
+    .btn:active {
+        text-decoration: none;
+        color: black;
+    }
+</style>

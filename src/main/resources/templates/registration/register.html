@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <title>Registration</title>
+    <link th:rel="stylesheet"
+          th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css} " />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+</head>
+
+<body>
+    <main></main>
+
+    <form th:action="@{/register/newUser}" th:object="${request}" method="post">
+        <h3 class="col"><b>Register</b></h3>
+        <div class="form mt-2">
+            <div class="row mb-4" style="margin-top: 20px">
+                <label for="name" class="col-sm-2 col-form-label"
+                    style="font-size: 1.4em; ">Name</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" th:field="*{name}" id="name" placeholder="Name"/>
+                    <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <label for="email" class="col-sm-2 col-form-label"
+                    style="font-size: 1.4em; ">Email</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" th:field="*{email}" id="email" placeholder="Email"/>
+                    <div class="alert alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                </div>
+
+            </div>
+            <div class="row mb-4">
+                <label for="password" class="col-sm-2 col-form-label"
+                    style="font-size: 1.4em; ">Password</label>
+                <div class="col-sm-5">
+                    <input type="password" class="form-control" th:field="*{password}" id="password" placeholder="Password"/>
+                    <div class="alert alert-warning" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                </div>
+
+            </div>
+            <div class="row mb-4">
+                <label for="role" class="col-sm-2 col-form-label"
+                    style="font-size: 1.4em; ">Account Type</label>
+                <div class="col-sm-5">
+                    <select class="form-control" th:field="*{appUserRole}" id="role">
+                        <option value="CUSTOMER">Customer</option>
+                        <option value="PARTNER">Partner</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="text-right col-sm-8" style="width:100%; padding:0">
+                    <button type="submit" class="btn btn-outline-warning">
+                        Register
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/1.16.1/umd/popper.min.js}"></script>
+</body>
+
+</html>
+
+<style>
+    h3 {
+        margin-top: 30px;
+        margin-left: 1vw;
+        text-align: center;
+    }
+
+    .form {
+        margin-left: 14vw;
+        text-align: center;
+        padding-right: 30px;
+        width: 100% !important;
+        align-items: center;
+    }
+
+    .col-form-label {
+        text-align: left !important;
+        margin-left: 60px;
+    }
+
+    body {
+        font-family: "Poppins", sans-serif;
+        font-size: 12px;
+        background-color: #F5F5F5;
+    }
+
+    .btn {
+        background-color: white;
+        text-decoration: none;
+        color: black;
+    }
+
+    .btn:hover,
+    .btn:active {
+        text-decoration: none;
+        color: black;
+    }
+</style>

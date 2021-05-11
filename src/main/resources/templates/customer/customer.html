@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <title>Customer Landing Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css} " />
+    <link th:rel="stylesheet" th:href="@{/home.css} " />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/home/customer">AntBuildz</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/home/customer/create">Create Request</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/home/customer/acceptedRequests">View Accepted Bids</a>
+                </li>
+
+                <div th:if="${noActiveUpgradeRequest}">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home/customer/upgrade-request">Register as a Partner</a>
+                    </li>
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <h4 style="margin-top: 10px; margin-bottom: 10px; padding-left: 15px;"><b>Welcome to Antbuildz!</b></h4>
+    <div th:unless="${noActiveUpgradeRequest}" style = "padding-left: 15px;">
+        <p>
+            Request to become a Partner has been submitted. Please wait
+            for confirmation from AntBuildz.</p>
+    </div>
+    <!--begin displaying data-->
+    <br />
+
+    <div class="container">
+        <h4>Live Bids</h4>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Request Id</th>
+                    <th>Name</th>
+                    <th>From Date</th>
+                    <th>To Date</th>
+                    <th>Request Status</th>
+                    <th>Partner Bids</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="equipmentRequestAndBids : ${customerEquipmentRequestsAndBids}">
+                    <td th:text="${equipmentRequestAndBids.key.id}"></td>
+                    <td th:text="${equipmentRequestAndBids.key.equipmentName}"></td>
+                    <td th:text="${equipmentRequestAndBids.key.fromDate}"></td>
+                    <td th:text="${equipmentRequestAndBids.key.toDate}"></td>
+                    <td th:if="${!equipmentRequestAndBids.value.isEmpty()}" th:text="'Bid(s) Submitted - Select one'">
+                    </td>
+                    <td th:if="${equipmentRequestAndBids.value.isEmpty()}" th:text="'Wait for Bid(s) Submission'"></td>
+                    <!--                <td th:if="${!equipmentRequestAndBids.key.bidAccepted && equipmentRequestAndBids.key.requestCompleted}" th:text="'Request Expired'"></td>-->
+                    <td colspan="4" style="border: 0px; padding:0px; margin:0px; height:auto;">
+                        <table class="table table-striped" style="margin: 0px;">
+                            <tr>
+                                <th>Bid Price</th>
+                                <th>Bid Partner ID</th>
+                                <th> </th>
+                            </tr>
+                            <tr th:each="bid : ${equipmentRequestAndBids.value}">
+                                <td th:text="${bid.price}"></td>
+                                <td th:text="${bid.partner.id}"></td>
+                                <td>
+                                        <a role="button" class="btn btn-success" th:href="@{/home/customer/acceptBid(
+                                        bidId=${bid.id},
+                                        equipmentRequestId=${equipmentRequestAndBids.key.id}
+                                        )}">
+                                            Accept Bid</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <br />
+
+    <div class="container">
+        <h4>Expired Bids</h4>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Request Id</th>
+                    <th>Name</th>
+                    <th>From Date</th>
+                    <th>To Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="expiredRequest : ${expiredRequests}">
+                    <td th:text="${expiredRequest.id}"></td>
+                    <td th:text="${expiredRequest.equipmentName}"></td>
+                    <td th:text="${expiredRequest.fromDate}"></td>
+                    <td th:text="${expiredRequest.toDate}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--bootstrap-->
+    <!--JS for Bootstrap-->
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/1.16.1/umd/popper.min.js}"></script>
+</body>
+
+</html>
+
+<style>
+    body {
+        font-family: "Poppins", sans-serif;
+        font-size: 15px;
+        background-color: white;
+    }
+
+    .btn {
+        background-color: white;
+        text-decoration: none;
+        color: black;
+    }
+
+    .btn:hover,
+    .btn:active {
+        text-decoration: none;
+        color: black;
+    }
+
+    .nav-link {
+        color: black;
+    }
+</style>

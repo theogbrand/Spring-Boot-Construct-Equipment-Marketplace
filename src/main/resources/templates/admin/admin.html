@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <title>Admin Landing Page</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap CSS -->
+  <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css} " />
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/home/admin" style="margin-left:10px;">AntBuildz</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <h4 style="margin-top: 10px; margin-bottom: 10px; padding-left: 15px;"><b>Welcome back, Admin</b></h4>
+  <div class="container">
+    <h4>Customer to Partner Requests</h4>
+    <table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th>Request ID</th>
+          <th>Customer ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- The naming conventions for the fields is based on what you defined in your entity -->
+        <tr th:each="request :${upgradeRequests}">
+          <td th:text="${request.id}"></td>
+          <td th:text="${request.user.id}"></td>
+          <td th:text="${request.user.name}"></td>
+          <td th:text="${request.user.email}"></td>
+          <!-- Creating a delete button for admin to delete users -->
+          <!-- Using () to append the requestid to the url, and this can be processed by our controller-->
+          <td>
+            <a th:href="@{/home/admin/acceptUpgradeRequest(requestId=${request.id}, customerId=${request.user.id})}"
+              class="btn btn-success">Approve</a>
+            <a th:href="@{/home/admin/rejectUpgradeRequest(requestId=${request.id})}"
+              class="btn btn-danger btn sm">Reject</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+  <div class="container">
+    <h4>Bid Recommendations for Partners</h4>
+    <table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th>Equipment Type</th>
+          <th>System Recommended Price</th>
+          <th>Recommended Daily Price (Seen by Partners)</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- The naming conventions for the fields is based on what you defined in your entity -->
+        <tr th:each="bid:${bidrec}">
+          <td th:text="${bid.equipmentName}"></td>
+          <td th:if="${bid.systemRecPrice == 0.0}" th:text="'Insufficient accepted bids'"></td>
+          <td th:unless="${bid.systemRecPrice == 0.0}" th:text="${bid.systemRecPrice}"></td>
+          <td th:text="${bid.recDailyPrice}"></td>
+          <!-- Creating a delete button for admin to delete users -->
+          <!-- Using () to append the requestid to the url, and this can be processed by our controller-->
+          <td>
+            <div class="btn-group" role="group">
+              <a th:href="@{/home/admin/bid-rec-form/update(recId=${bid.recommendationId})}" class="btn btn-primary"
+                style="margin-right: 10px;">Update Values</a>
+              <a th:href="@{/home/admin/bid-rec-form/delete(recId=${bid.recommendationId})}" class="btn btn-danger"
+                style="margin-right: 10px;">Delete</a>
+              <a th:href="@{/home/admin/bid-rec-form/systemupdate(equipmentName=${bid.equipmentName}, recId=${bid.recommendationId})}"
+                class="btn btn-info">Get System Recommendation</a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <a th:href="@{admin/bid-rec-form}" class="btn btn-secondary">Add Bid Recommendation</a>
+  </div>
+
+
+  <!--bootstrap-->
+  <!--JS for Bootstrap-->
+  <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+  <script th:src="@{/webjars/popper.js/1.16.1/umd/popper.min.js}"></script>
+</body>
+
+</html>
